@@ -2,11 +2,14 @@
   "name": "livekit-meet",
   "version": "0.2.0",
   "private": true,
+  "homepage": "./",
+  "main": "./public/electron.js",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "electron:start": "concurrently -k \"cross-env BROWSER=none yarn dev\" \"wait-on http://localhost:3000 && electron .\""
   },
   "dependencies": {
     "@livekit/components-react": "1.1.0",
@@ -23,9 +26,45 @@
     "@types/node": "18.17.1",
     "@types/react": "18.2.18",
     "@types/react-dom": "18.2.7",
+    "concurrently": "^8.2.0",
+    "cross-env": "^7.0.3",
+    "electron": "^26.0.0",
+    "electron-builder": "^24.6.3",
+    "electron-is-dev": "^2.0.0",
     "eslint": "8.46.0",
     "eslint-config-next": "12.3.4",
     "source-map-loader": "^4.0.1",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "wait-on": "^7.0.1"
+  },
+  "build": {
+    "appId": "livekit",
+    "productName": "Livekit",
+    "files": [
+      "dist/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "public"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "deb"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "./logo.ico"
+    },
+    "nsis": {
+      "license": "./license.txt",
+      "installerIcon": "./logo.ico",
+      "uninstallerIcon": "./logo.ico",
+      "uninstallDisplayName": "Livekit",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": "always"
+    }
   }
 }
